@@ -1,0 +1,72 @@
+BASE CONFIGs for SD-WAN
+default credentials for all SD-WAN appliances is admin/admin
+
+
+vBOND
+system
+ host-name               vBOND
+ system-ip               169.254.100.100
+ site-id                 1000
+ admin-tech-on-failure
+ no route-consistency-check
+ organization-name       {YOUR ORG NAME}
+ vbond 10.0.0.10 local
+vpn 0
+ interface ge0/0
+  ip address 10.0.0.10/24
+  ipv6 dhcp-client
+  no shutdown
+ !
+ ip route 0.0.0.0/0 10.0.0.1
+
+vSMART
+system
+ host-name             vSMART
+ system-ip             169.254.100.101
+ site-id               1000
+ admin-tech-on-failure
+ organization-name     {YOUR ORG NAME}
+ vbond 10.0.0.10
+vpn 0
+ no interface eth0
+ interface eth1
+  ip address 10.0.0.11/24
+  no shutdown
+ !
+ ip route 0.0.0.0/0 10.0.0.1
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+
+vMANAGE
+vpn 0
+ no interface eth0
+ interface eth1
+  ip address 10.0.0.12/24
+  no shutdown
+ !
+ ip route 0.0.0.0/0 10.0.0.1
+!
+vpn 512
+ interface eth0
+  ip dhcp-client
+  no shutdown
+
+
+
+
+cEDGEs
+config-transaction
+interface GigabitEthernet 1
+ip address dhcp
+interface GigabitEthernet 2
+ip address dhcp
+interface GigabitEthernet 3
+ip address dhcp
+interface GigabitEthernet 5
+ip address dhcp
+hostname cEDGE_1
+commit 
+
